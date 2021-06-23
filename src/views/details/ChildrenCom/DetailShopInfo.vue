@@ -111,13 +111,13 @@ export default {
   background-color: rgb(228, 63, 74);
 }
 .isbNoActive{
-  background-color: rgb(107, 123, 86);
+  background-color: rgb(71, 228, 53);
 }
 .isActive{
   color:rgb(228, 63, 74) !important;
 }
 .isNoActive{
-  color: rgb(107, 123, 86) !important;
+  color: rgb(71, 228, 53) !important;
 }
 .enter{
   margin-top:30px ;

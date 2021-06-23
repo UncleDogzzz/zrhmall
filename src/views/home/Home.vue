@@ -38,6 +38,8 @@
 
    import backTop from 'components/content/BackTop/backTop.vue'
 
+   import {itemListenerMixin} from 'common/mixin.js' //导入混入对象
+
   export default{
     name:'Home',
     components:{
@@ -50,6 +52,7 @@
       scroll,
       backTop
     },
+    mixins:[itemListenerMixin],  //使用混入对象
     data(){
      return {
        banners:[],          //轮播图数据
@@ -63,7 +66,8 @@
        backtopIsshow:false,         //控制back-top组件是否显示
        tabconrolTop:0,              //tabcontrol组件的Top高度
        tabcontrolflex:false,         //tabconrol组件吸顶效果是否显示
-       leaveY:0                   //记录离开时的滚动位置
+       leaveY:0                      //记录离开时的滚动位置
+
      }
     },
     created(){
@@ -73,22 +77,20 @@
      this.getHomeGoods('sell');
    },
   mounted() {
-    const refresh=this.debounce(this.$refs.scroll.refresh,500)   //防抖函数返回一个函数
-    this.$bus.$on('imgFinish',()=>{                   // 利用防抖函数 实现bus事件总线监听图片加载完成，每一个商品item图片加载完成就刷新bscroll的高度
-       refresh()
-    })
-   },
+  },
   computed:{
     showGoods(){                                 //获取当前商品的信息
      return this.goods[this.showCurrent].list
     }
    },
    activated() {                      //活跃时，滚动到Home组件上次离开时的位置
-    this.$refs.scroll.scrollTo(0,this.leaveY,0);    //滚动到Home组件上次离开时的位置
+    this.$refs.scroll.scrollTo(0,this.leaveY);    //滚动到Home组件上次离开时的位置
     this.$refs.scroll.refresh();                //刷新高度
+    this.$bus.$on('imgFinish',this.ItemImgFinish)  //活跃时，$bus重新监听Home组件的图片加载
    },
    deactivated(){                   //离开时，保存滚动位置。
     this.leaveY=this.$refs.scroll.scroll.y; //离开时，保存滚动位置。
+    this.$bus.$off('imgFinish',this.ItemImgFinish)  //离开时，取消$bus监听当前home组件的图片加载
    },
   methods:{
   tabClick(index){                                     //监听pop,new,sell 控制栏点击事件
@@ -110,7 +112,7 @@
    this.$refs.tabcontrolTop.currentIndex=index;
   },
   backClick(){
-    this.$refs.scroll.scrollTo(0,0)        //通过this.$refs.scroll访问scroll组件的scrollTo方法 来实现回到顶部（回到顶部）
+    this.$refs.scroll.scrollTo(0,0,1000)        //通过this.$refs.scroll访问scroll组件的scrollTo方法 来实现回到顶部（回到顶部）
   },
   contentScroll(position){
     this.backtopIsshow= -position.y>1000  //通过比较scroll组件传递过来的位置信息，来决定是否显示back-top组件
@@ -120,15 +122,7 @@
     this.getHomeGoods(this.showCurrent);          //加载更多当前分类商品信息
     this.$refs.scroll.scroll.finishPullUp();         //手动完成上拉加载，才会执行下一次上拉加载
   },
-  debounce(func,delay){                      //防抖函数
-    let timer=null
-    return function (...args){
-      if (timer){clearTimeout(timer)}
-      timer=setTimeout(()=>{
-        func.apply(this,args)
-      },delay)
-    }
-  },
+
   imgLoad(){
     this.tabconrolTop=this.$refs.tabcontrolIndex.$el.offsetTop;             //把偏下位置的tabconrol组件的Top高度赋值给变量tabconrolTop
   },

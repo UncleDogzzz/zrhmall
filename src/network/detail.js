@@ -9,6 +9,13 @@ export function getDetailData(iid) {             //根据商品id获取数据
     })
 }
 
+export function getRecommend() {               //获取推荐商品数据
+    return request({
+        url: '/recommend',
+    })
+}
+
+
 export class Goods {                              //定义一个类，保存商品的基本信息
     constructor(itemInfo, columns, services) {
         this.title = itemInfo.title
@@ -32,3 +39,10 @@ export class Shop {                           //定义一个类，保存店铺�
         this.goodsCount = shopInfo.cGoods;
     }
 }
+export class GoodsParams {                   //定义一个类，保存商品的参数信息
+    constructor(info, rule) {
+        this.image = info.images ? info.images[0] : "";
+        this.infos = info.set;
+        this.size = rule.tables;
+     }
+    }

@@ -36,10 +36,11 @@
     this.scroll.on('scroll',(position)=>{           //scroll组件监听滚动事件，并把位置信息传递给home组件
       this.$emit('scroll',position)
     })
-
+   if(this.pullUpLoad){
     this.scroll.on('pullingUp',()=>{                //scroll组件监听上拉最底部事件 把事件传递给home组件
       this.$emit('pullingUp');
     })
+    }
 
     },
     methods:{

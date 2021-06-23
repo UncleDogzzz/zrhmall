@@ -31,6 +31,7 @@
       },
       itemClick(index){
         this.currentIndex=index;
+        this.$emit('TitleClick',index);           //标题被点击，传递事件给父组件detail组件。
       }
     }
   }

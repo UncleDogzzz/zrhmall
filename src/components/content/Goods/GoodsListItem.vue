@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item"  @click="itemClick">
-   <img :src='GoodsListItem.show.img'  @load='imgFinish' />   <!-- 监听图片加载完成，解决BScroll中图片加载的BUG -->
+   <img :src='showImage'  @load='imgFinish' />   <!-- 监听图片加载完成，解决BScroll中图片加载的BUG -->
     <div class='goods-info'>
      <p> {{GoodsListItem.title}}</p>
      <span class='price'>{{GoodsListItem.price}} </span>
@@ -17,6 +17,11 @@
         default(){
           return{}
         }
+      }
+    },
+    computed:{
+      showImage(){                                      //图片数据判断，商品展示数据图片的与推荐商品图片的位置不一样
+        return this.GoodsListItem.image || this.GoodsListItem.show.img
       }
     },
     methods:{
