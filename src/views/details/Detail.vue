@@ -86,6 +86,7 @@
       getRecommend().then(res=>{                 //获取推荐商品数据
         this.Recommend=res.data;
         console.log(res)
+		console.log(123)
       })
 
       this.getThemeTopY=debounce(()=>{                         //利用防抖函数，对ThemeTopY进行更新
